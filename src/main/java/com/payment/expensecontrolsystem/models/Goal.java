@@ -2,6 +2,7 @@ package com.payment.expensecontrolsystem.models;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,10 +16,10 @@ public class Goal {
     private String description;
 
     @Column(precision = 20, scale = 2, nullable = false, name = "total_value")
-    private Double totalValue;
+    private BigDecimal totalValue;
 
     @Column(precision = 20, scale = 2, nullable = false, name = "accumulated_value")
-    private Double accumulated_value;
+    private BigDecimal accumulated_value;
 
     @Column
     private LocalDateTime term;
@@ -43,19 +44,19 @@ public class Goal {
         this.description = description;
     }
 
-    public Double getTotalValue() {
+    public BigDecimal getTotalValue() {
         return totalValue;
     }
 
-    public void setTotalValue(Double totalValue) {
+    public void setTotalValue(BigDecimal totalValue) {
         this.totalValue = totalValue;
     }
 
-    public Double getAccumulated_value() {
+    public BigDecimal getAccumulated_value() {
         return accumulated_value;
     }
 
-    public void setAccumulated_value(Double accumulated_value) {
+    public void setAccumulated_value(BigDecimal accumulated_value) {
         this.accumulated_value = accumulated_value;
     }
 

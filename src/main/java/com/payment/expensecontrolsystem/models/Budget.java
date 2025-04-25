@@ -3,6 +3,7 @@ package com.payment.expensecontrolsystem.models;
 import com.payment.expensecontrolsystem.enums.Category;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,7 +18,7 @@ public class Budget {
     private Category category;
 
     @Column(nullable = false, precision = 20, scale = 2)
-    private Double mouthlyLimit;
+    private BigDecimal mouthlyLimit;
 
     @Column(nullable = false)
     private Double progress;
@@ -45,11 +46,11 @@ public class Budget {
         this.category = category;
     }
 
-    public Double getMouthlyLimit() {
+    public BigDecimal getMouthlyLimit() {
         return mouthlyLimit;
     }
 
-    public void setMouthlyLimit(Double mouthlyLimit) {
+    public void setMouthlyLimit(BigDecimal mouthlyLimit) {
         this.mouthlyLimit = mouthlyLimit;
     }
 

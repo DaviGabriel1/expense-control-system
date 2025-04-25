@@ -5,6 +5,7 @@ import com.payment.expensecontrolsystem.enums.PaymentMethod;
 import com.payment.expensecontrolsystem.enums.Status;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -16,7 +17,7 @@ public class Transactions {
     private String uuid;
 
     @Column(precision = 20, scale = 2, nullable = false)
-    private Double value;
+    private BigDecimal value;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -62,11 +63,11 @@ public class Transactions {
         this.uuid = uuid;
     }
 
-    public Double getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setValue(Double value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 
