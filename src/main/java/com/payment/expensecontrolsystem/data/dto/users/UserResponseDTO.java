@@ -8,13 +8,6 @@ public class UserResponseDTO {
     private final String email;
     private final Date createdAt;
 
-    public UserResponseDTO(Long id, String name, String email, Date createdAt) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.createdAt = createdAt;
-    }
-
     private UserResponseDTO(Builder builder){
         this.id = builder.id;
         this.name = builder.name;

@@ -1,7 +1,7 @@
 package com.payment.expensecontrolsystem.exceptions.handler;
 
 import com.payment.expensecontrolsystem.exceptions.ExceptionResponse;
-import com.payment.expensecontrolsystem.exceptions.UserNotFoundException;
+import com.payment.expensecontrolsystem.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -22,8 +22,8 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public final ResponseEntity<ExceptionResponse> handleUserNotFoundException (UserNotFoundException e, WebRequest request){
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public final ResponseEntity<ExceptionResponse> handleResourceNotFoundException (ResourceNotFoundException e, WebRequest request){
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), e.getMessage(),request.getDescription(false));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }

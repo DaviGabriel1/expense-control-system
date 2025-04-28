@@ -1,7 +1,7 @@
 package com.payment.expensecontrolsystem.services;
 
 import com.payment.expensecontrolsystem.data.dto.users.UserResponseDTO;
-import com.payment.expensecontrolsystem.exceptions.UserNotFoundException;
+import com.payment.expensecontrolsystem.exceptions.ResourceNotFoundException;
 import com.payment.expensecontrolsystem.interfaces.IUserService;
 import com.payment.expensecontrolsystem.mapper.UserMapper;
 import com.payment.expensecontrolsystem.models.User;
@@ -17,7 +17,7 @@ public class UserService implements IUserService {
     }
 
     public UserResponseDTO getUserById(Long id) {
-        User user = this.userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("usuário não encontrado"));
+        User user = this.userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("usuário não encontrado"));
         return UserMapper.toUserResponseDTO(user);
     }
 }
