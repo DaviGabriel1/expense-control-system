@@ -1,6 +1,7 @@
 package com.payment.expensecontrolsystem.services;
 
 import com.payment.expensecontrolsystem.enums.PaymentMethod;
+import com.payment.expensecontrolsystem.exceptions.ResourceNotFoundException;
 import com.payment.expensecontrolsystem.interfaces.IInvoiceService;
 import com.payment.expensecontrolsystem.models.Invoices;
 import com.payment.expensecontrolsystem.models.Product;
@@ -25,13 +26,18 @@ public class NfceService implements IInvoiceService {
         this.productRepository = productRepository;
         this.invoicesRepository = invoicesRepository;
     }
-
+    @Override
     public void generateInvoice(String url) throws Exception {
         Document doc = Jsoup.connect(url).timeout(10000).get();
         Invoices invoice = this.createInvoice(doc);
         Invoices invoiceResult = this.invoicesRepository.save(invoice);
         final List<Product> products = this.createProductsList(doc, invoiceResult);
         this.productRepository.saveAll(products);
+    }
+
+    @Override
+    public Invoices getInvoiceById(Long id) throws ResourceNotFoundException {
+        return this.invoicesRepository.findByIdWithProducts(id);
     }
 
     private Invoices createInvoice(Document doc){

@@ -1,11 +1,9 @@
 package com.payment.expensecontrolsystem.controllers;
 
 import com.payment.expensecontrolsystem.interfaces.IInvoiceService;
+import com.payment.expensecontrolsystem.models.Invoices;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("invoices")
@@ -16,8 +14,8 @@ public class InvoicesController {
         this.invoiceService = invoiceService;
     }
 
-    @GetMapping
-    public ResponseEntity<String> getInvoices(@RequestParam(name = "url") String url, @RequestParam(name = "invoice_type") String invoiceType) throws Exception {
+    @PostMapping
+    public ResponseEntity<String> createInvoices(@RequestParam(name = "url") String url, @RequestParam(name = "invoice_type") String invoiceType) throws Exception {
         switch (invoiceType) {
             case "nfce":
                 this.invoiceService.generateInvoice(url);
@@ -26,5 +24,11 @@ public class InvoicesController {
                 return ResponseEntity.badRequest().body("Invalid invoice type");
         }
         return ResponseEntity.ok("ok");
+    }
+
+    @GetMapping Invoices getInvoiceById(@RequestParam(name = "id") Long id) throws Exception {
+        Invoices invoice = this.invoiceService.getInvoiceById(id);
+        System.out.println(invoice.getProducts());
+        return invoice;
     }
 }

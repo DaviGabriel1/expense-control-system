@@ -1,5 +1,6 @@
 package com.payment.expensecontrolsystem.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -28,6 +29,7 @@ public class Product {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "invoice_id")
+    @JsonBackReference
     private Invoices invoices;
 
     public Product(String name, BigDecimal totalprice, BigDecimal unitprice, Integer quantity, String code, Invoices invoices) {
