@@ -41,6 +41,62 @@ public class Product {
 
     public Product() {}
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public BigDecimal getTotalprice() {
+        return totalprice;
+    }
+
+    public void setTotalprice(BigDecimal totalprice) {
+        this.totalprice = totalprice;
+    }
+
+    public BigDecimal getUnitprice() {
+        return unitprice;
+    }
+
+    public void setUnitprice(BigDecimal unitprice) {
+        this.unitprice = unitprice;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public Invoices getInvoices() {
+        return invoices;
+    }
+
+    public void setInvoices(Invoices invoices) {
+        this.invoices = invoices;
+    }
+
     @Override
     public String toString() {
         return "Product{" +

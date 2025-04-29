@@ -61,7 +61,17 @@ public class NfceService implements IInvoiceService {
             BigDecimal valorUnitario = new BigDecimal(ParseString.parseStringToNumber(item.selectFirst(".RvlUnit").text()));
             BigDecimal valorTotal = new BigDecimal(ParseString.parseStringToNumber(item.selectFirst(".valor").text()));
             Product product = new Product(nomeProduto, valorTotal, valorUnitario, quantidade, codigoSanitizado, invoices);
-            productsList.add(product); //TODO: implementar a analise de código do produto para evitar duplicidade produto na tabela de mesmo invoice_id
+            boolean flag = false;
+            for(Product p : productsList) {
+                if(p.getCode().equals(product.getCode())){
+                    p.setQuantity(p.getQuantity() + product.getQuantity());
+                    p.setTotalprice(p.getTotalprice().add(product.getTotalprice()));
+                    flag = true;
+                }
+            }
+            if(!flag) {
+                productsList.add(product);
+            }
         }
         return productsList;
     }
