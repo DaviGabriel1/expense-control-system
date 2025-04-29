@@ -4,10 +4,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Entity
 @Table(name = "product")
-public class Product {
+public class Product { //TODO: campo categoria selecionado com IA simples
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,21 +28,41 @@ public class Product {
     @Column
     private String code;
 
+    @Column(nullable = false)
+    private String measure;
+
+    @Column
+    private Date createdAt;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "invoice_id")
     @JsonBackReference
     private Invoices invoices;
 
-    public Product(String name, BigDecimal totalprice, BigDecimal unitprice, Integer quantity, String code, Invoices invoices) {
+    public Product(Long id, String name, BigDecimal totalprice, BigDecimal unitprice, Integer quantity, String code, String measure, Date createdAt, Invoices invoices) {
+        this.id = id;
         this.name = name;
         this.totalprice = totalprice;
         this.unitprice = unitprice;
         this.quantity = quantity;
         this.code = code;
+        this.measure = measure;
+        this.createdAt = createdAt;
         this.invoices = invoices;
     }
 
     public Product() {}
+
+    public Product(String nomeProduto, BigDecimal totalPrice, BigDecimal unitPrice, Integer quantity, String code, String measure, Invoices invoices) {
+        this.name = nomeProduto;
+        this.totalprice = totalPrice;
+        this.unitprice = unitPrice;
+        this.quantity = quantity;
+        this.code = code;
+        this.measure = measure;
+        this.createdAt = new Date();
+        this.invoices = invoices;
+    }
 
     public Long getId() {
         return id;
@@ -91,12 +112,28 @@ public class Product {
         this.code = code;
     }
 
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public Invoices getInvoices() {
         return invoices;
     }
 
     public void setInvoices(Invoices invoices) {
         this.invoices = invoices;
+    }
+
+    public String getMeasure() {
+        return measure;
+    }
+
+    public void setMeasure(String measure) {
+        this.measure = measure;
     }
 
     @Override

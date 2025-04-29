@@ -3,10 +3,10 @@ package com.payment.expensecontrolsystem.services;
 import com.payment.expensecontrolsystem.enums.PaymentMethod;
 import com.payment.expensecontrolsystem.exceptions.ResourceNotFoundException;
 import com.payment.expensecontrolsystem.interfaces.IInvoiceService;
+import com.payment.expensecontrolsystem.interfaces.IProductService;
 import com.payment.expensecontrolsystem.models.Invoices;
 import com.payment.expensecontrolsystem.models.Product;
 import com.payment.expensecontrolsystem.repositories.InvoicesRepository;
-import com.payment.expensecontrolsystem.repositories.ProductRepository;
 import com.payment.expensecontrolsystem.utils.ParseString;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -19,11 +19,11 @@ import java.util.List;
 
 @Service
 public class NfceService implements IInvoiceService {
-    private final ProductRepository productRepository;
+    private final IProductService productService;
     private final InvoicesRepository invoicesRepository;
 
-    public NfceService(ProductRepository productRepository, InvoicesRepository invoicesRepository) {
-        this.productRepository = productRepository;
+    public NfceService(IProductService productService, InvoicesRepository invoicesRepository) {
+        this.productService = productService;
         this.invoicesRepository = invoicesRepository;
     }
     @Override
@@ -32,7 +32,7 @@ public class NfceService implements IInvoiceService {
         Invoices invoice = this.createInvoice(doc);
         Invoices invoiceResult = this.invoicesRepository.save(invoice);
         final List<Product> products = this.createProductsList(doc, invoiceResult);
-        this.productRepository.saveAll(products);
+        this.productService.saveAllProducts(products);
     }
 
     @Override
@@ -63,10 +63,10 @@ public class NfceService implements IInvoiceService {
             String nomeProduto = item.selectFirst(".txtTit").text();
             String codigoSanitizado = ParseString.parseStringToNumber(item.selectFirst(".RCod").text()).trim();
             Integer quantidade = Integer.parseInt(item.selectFirst(".Rqtd").text().replaceAll("[^0-9]", ""));
-            //String unidade = item.selectFirst(".RUN").text();
+            String unidade = item.selectFirst(".RUN").text().split(" ")[1];
             BigDecimal valorUnitario = new BigDecimal(ParseString.parseStringToNumber(item.selectFirst(".RvlUnit").text()));
             BigDecimal valorTotal = new BigDecimal(ParseString.parseStringToNumber(item.selectFirst(".valor").text()));
-            Product product = new Product(nomeProduto, valorTotal, valorUnitario, quantidade, codigoSanitizado, invoices);
+            Product product = new Product(nomeProduto, valorTotal, valorUnitario, quantidade, codigoSanitizado, unidade, invoices);
             boolean flag = false;
             for(Product p : productsList) {
                 if(p.getCode().equals(product.getCode())){
