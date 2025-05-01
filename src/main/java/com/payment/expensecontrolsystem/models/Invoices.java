@@ -29,7 +29,7 @@ public class Invoices {
     @Column
     private Date createdAt;
 
-    @OneToMany(mappedBy = "invoices", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "invoices", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Product> products;
 

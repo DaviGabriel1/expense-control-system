@@ -1,9 +1,11 @@
 package com.payment.expensecontrolsystem.services;
 
+import com.payment.expensecontrolsystem.data.dto.invoices.CreateInvoiceProductsDTO;
 import com.payment.expensecontrolsystem.enums.PaymentMethod;
 import com.payment.expensecontrolsystem.exceptions.ResourceNotFoundException;
 import com.payment.expensecontrolsystem.interfaces.IInvoiceService;
 import com.payment.expensecontrolsystem.interfaces.IProductService;
+import com.payment.expensecontrolsystem.mapper.InvoiceMapper;
 import com.payment.expensecontrolsystem.models.Invoices;
 import com.payment.expensecontrolsystem.models.Product;
 import com.payment.expensecontrolsystem.repositories.InvoicesRepository;
@@ -30,7 +32,7 @@ public class NfceService implements IInvoiceService {
     public void generateInvoice(String url) throws Exception {
         Document doc = Jsoup.connect(url).timeout(10000).get();
         Invoices invoice = this.createInvoice(doc);
-        Invoices invoiceResult = this.invoicesRepository.save(invoice);
+        Invoices invoiceResult = this.invoicesRepository.save(invoice); //TODO: salvar apenas o invoice com cascade.ALL
         final List<Product> products = this.createProductsList(doc, invoiceResult);
         this.productService.saveAllProducts(products);
     }
@@ -61,12 +63,13 @@ public class NfceService implements IInvoiceService {
 
         for(Element item : productTr) {
             String nomeProduto = item.selectFirst(".txtTit").text();
-            String codigoSanitizado = ParseString.parseStringToNumber(item.selectFirst(".RCod").text()).trim();
+            String codigo = ParseString.parseStringToNumber(item.selectFirst(".RCod").text()).trim();
             Integer quantidade = Integer.parseInt(item.selectFirst(".Rqtd").text().replaceAll("[^0-9]", ""));
-            String unidade = item.selectFirst(".RUN").text().split(" ")[1];
+            String unidade = item.selectFirst(".RUN").text().split(" ")[1].toLowerCase();
             BigDecimal valorUnitario = new BigDecimal(ParseString.parseStringToNumber(item.selectFirst(".RvlUnit").text()));
             BigDecimal valorTotal = new BigDecimal(ParseString.parseStringToNumber(item.selectFirst(".valor").text()));
-            Product product = new Product(nomeProduto, valorTotal, valorUnitario, quantidade, codigoSanitizado, unidade, invoices);
+            Product product = new Product(nomeProduto, valorTotal, valorUnitario, quantidade, codigo, unidade, invoices);
+
             boolean flag = false;
             for(Product p : productsList) {
                 if(p.getCode().equals(product.getCode())){
@@ -96,5 +99,10 @@ public class NfceService implements IInvoiceService {
             return PaymentMethod.PIX;
         }
         return PaymentMethod.OTHER;
+    }
+
+    public void createManualInvoice(CreateInvoiceProductsDTO createInvoiceProductsDTO) {
+        Invoices invoice = InvoiceMapper.toEntity(createInvoiceProductsDTO);
+        this.invoicesRepository.save(invoice);
     }
 }
