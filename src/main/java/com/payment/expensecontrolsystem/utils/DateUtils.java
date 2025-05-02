@@ -10,7 +10,12 @@ public class DateUtils {
     }
 
     public static boolean isDatesValidTime(Date date1, Date date2){
-        System.out.println(date1.before(date2));
         return date1.before(date2);
+    }
+
+    public static String normalizeDate(Date date){
+        String[] dateParts = date.toString().replace("."," ").split(":");
+        String[] datePartswithoutTime = dateParts[0].split("-");
+        return datePartswithoutTime[2].split(" ")[0] + "/" + datePartswithoutTime[1] + "/" + datePartswithoutTime[0];
     }
 }

@@ -1,5 +1,6 @@
 package com.payment.expensecontrolsystem.exceptions.handler;
 
+import com.payment.expensecontrolsystem.exceptions.DateInvalidException;
 import com.payment.expensecontrolsystem.exceptions.ExceptionResponse;
 import com.payment.expensecontrolsystem.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,12 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     @ExceptionHandler(IllegalArgumentException.class)
     public final ResponseEntity<ExceptionResponse> handleIllegalArgumentException (IllegalArgumentException e, WebRequest request){
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), e.getMessage(),request.getDescription(false));
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DateInvalidException.class)
+    public final ResponseEntity<ExceptionResponse> handleDateInvalidException (DateInvalidException e,WebRequest request){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), e.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 }

@@ -1,10 +1,12 @@
 package com.payment.expensecontrolsystem.data.dto.insights;
 
-public class TopProductsDTO {
-    /*private final List<Product> topProducts;
+import com.payment.expensecontrolsystem.interfaces.IDto;
 
+public class TopProductsDTO implements IDto {
+    /*private final List<Product> topProduc
     public TopProductsDTO(List<Product> topProducts) {
-        this.topProducts = topProducts;
+        this.topProducts = topProductts;
+s;
     }
     public List<Product> getTopProducts() {
         return topProducts;

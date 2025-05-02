@@ -3,7 +3,7 @@ package com.payment.expensecontrolsystem.services;
 import com.payment.expensecontrolsystem.data.dto.invoices.CreateInvoiceProductsDTO;
 import com.payment.expensecontrolsystem.enums.PaymentMethod;
 import com.payment.expensecontrolsystem.exceptions.ResourceNotFoundException;
-import com.payment.expensecontrolsystem.interfaces.IInvoiceService;
+import com.payment.expensecontrolsystem.interfaces.IGeneratorInvoiceService;
 import com.payment.expensecontrolsystem.interfaces.IProductService;
 import com.payment.expensecontrolsystem.mapper.InvoiceMapper;
 import com.payment.expensecontrolsystem.models.Invoices;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class NfceService implements IInvoiceService {
+public class NfceService implements IGeneratorInvoiceService {
     private final IProductService productService;
     private final InvoicesRepository invoicesRepository;
 

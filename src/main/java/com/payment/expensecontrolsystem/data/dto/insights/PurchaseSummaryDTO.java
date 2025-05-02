@@ -1,8 +1,10 @@
 package com.payment.expensecontrolsystem.data.dto.insights;
 
+import com.payment.expensecontrolsystem.interfaces.IDto;
+
 import java.math.BigDecimal;
 
-public class PurchaseSummaryDTO {
+public class PurchaseSummaryDTO implements IDto {
     private final BigDecimal totalSpent;
     private final Integer totalPurchases;
     private final BigDecimal averageTicketPrice;
