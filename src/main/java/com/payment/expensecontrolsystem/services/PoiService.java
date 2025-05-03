@@ -6,13 +6,12 @@ import com.payment.expensecontrolsystem.enums.FileExtensions;
 import com.payment.expensecontrolsystem.interfaces.IFileManagementService;
 import com.payment.expensecontrolsystem.models.Invoices;
 import com.payment.expensecontrolsystem.models.Product;
-import com.payment.expensecontrolsystem.repositories.InvoicesRepository;
 import com.payment.expensecontrolsystem.utils.DateUtils;
 import com.payment.expensecontrolsystem.utils.SpreadSheetsStylesPatterns;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -26,6 +25,7 @@ import java.util.List;
 @Service
 public class PoiService implements IFileManagementService {  //TODO: implementation with s3Service to upload files to s3 bucket
     private final SecretsConfig secretsConfig;
+    private static final Logger logger = LoggerFactory.getLogger(PoiService.class.getName());
 
     public PoiService(SecretsConfig secretsConfig){
         this.secretsConfig = secretsConfig;
@@ -35,6 +35,7 @@ public class PoiService implements IFileManagementService {  //TODO: implementat
     public File createInvoiceFileXlsx(String fileName, Invoices dto) {
         String date = new Date().toString().replaceAll(" ", "_").replaceAll(":", "_");
         File insightsFile = new File(this.secretsConfig.getFullPath() + fileName+"_"+dto.getId()+"_"+date+FileExtensions.XLSX.getExtension());
+        logger.info("gerando arquivo {}.xlsx", insightsFile.getName());
         FileOutputStream fileOutputStream = null;
         Workbook workbook = null;
 
@@ -44,16 +45,16 @@ public class PoiService implements IFileManagementService {  //TODO: implementat
             fileOutputStream = generateSheet(workbook, sheet, dto, insightsFile);
             workbook.write(fileOutputStream);
         } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
+            logger.error("erro ao buscar arquivo de nome {}, gerando o seguinte erro: {}", insightsFile.getName(), e.getMessage());
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            logger.error("erro ao acessar o arquivo {}, gerando o seguinte erro: {}", insightsFile.getName(), e.getMessage());
             throw new RuntimeException(e.getMessage());
         } finally {
             try {
                 if (fileOutputStream != null) fileOutputStream.close();
                 if (workbook != null) workbook.close();
             } catch (IOException e) {
-                System.out.println("Erro ao fechar recursos: " + e.getMessage());
+                logger.error("Erro ao fechar recursos: {}", e.getMessage());
             }
         }
         return insightsFile;
@@ -64,6 +65,7 @@ public class PoiService implements IFileManagementService {  //TODO: implementat
     public File CreateManyInvoicesFileXlsx(String fileName, List<Invoices> invoices) {
         String date = new Date().toString().replaceAll(" ","_").replaceAll(":","_");
         File file = new File(this.secretsConfig.getFullPath() + fileName+"_"+"_"+date+FileExtensions.XLSX.getExtension());
+        logger.info("gerando arquivo {}.xlsx", file.getName());
         FileOutputStream fileOutputStream = null;
         Workbook workbook = null;
 
@@ -78,6 +80,7 @@ public class PoiService implements IFileManagementService {  //TODO: implementat
             }
         }
         catch(IOException e){
+            logger.error("erro ao acessar arquivo: {}", e.getMessage());
             throw new RuntimeException(e.getMessage());
         }
         return file;

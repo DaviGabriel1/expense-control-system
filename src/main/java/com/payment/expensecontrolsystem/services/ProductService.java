@@ -6,7 +6,6 @@ import com.payment.expensecontrolsystem.interfaces.IProductService;
 import com.payment.expensecontrolsystem.models.Product;
 import com.payment.expensecontrolsystem.repositories.ProductRepository;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
