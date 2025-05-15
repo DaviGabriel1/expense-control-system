@@ -1,4 +1,6 @@
 package com.payment.expensecontrolsystem.data.dto.auth;
 
-public class RequestRegisterDTO {
+import com.payment.expensecontrolsystem.enums.Roles;
+
+public record RequestRegisterDTO(String email, String password, String firstName, String lastName, Roles role) {
 }

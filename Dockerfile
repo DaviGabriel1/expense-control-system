@@ -1,4 +1,3 @@
-FROM ubuntu:latest
-LABEL authors="Davi.Santos"
-
-ENTRYPOINT ["top", "-b"]
+FROM eclipse-temurin:24-jdk
+COPY target/*.jar app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]

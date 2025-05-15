@@ -1,4 +1,4 @@
 package com.payment.expensecontrolsystem.data.dto.auth;
 
-public class ResponseLoginDTO {
+public record ResponseLoginDTO(String token) {
 }

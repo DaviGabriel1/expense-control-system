@@ -17,16 +17,4 @@ public class TransactionController {
     public Transactions getTransactionByUuid(@RequestParam(name = "uuid") String uuid) {
         return this.transactionService.getTransactionByUuid(uuid);
     }
-
-    @PostMapping
-    public Transactions createTransaction(@RequestBody Transactions transaction){
-        return this.transactionService.createTransaction(transaction);
-    }
-
-    @PutMapping
-    public Transactions updateTransaction(@RequestBody Transactions transactions){
-        return new Transactions();
-    }
-
-
 }
